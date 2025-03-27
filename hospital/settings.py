@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myhospital',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +137,26 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    #nouvellement ajoute
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',  # Autorise uniquement JSON
+    ),
+    
+}
+
+#nouvellementajoutes
+#AUTH_USER_MODEL= 'myhospital.user'
+# URL de connexion
+#LOGIN_URL = '/login/'
+
+# URL de redirection après une connexion réussie
+#LOGIN_REDIRECT_URL = '/'
+
+# URL de redirection après une déconnexion
+#LOGOUT_REDIRECT_URL = '/secretaire/'

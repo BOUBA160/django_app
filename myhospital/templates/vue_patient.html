@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><h1>Mes Rendez-vous</h1>
+</head>
+<body>
+<ul>
+    {% for rdv in rendezvous %}
+    <li>Avec {{ rdv.medecin.user.username }} - {{ rdv.date_rdv }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

@@ -17,11 +17,52 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myhospital import views
+from django.urls import path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
+from django.urls import path, include
+from myhospital.views import ProtectedView
+from django.contrib.auth import views as auth_views
+
+
+
+
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.connexion, name='connexion'),
-     path('acceuil/', views.acceuil, name='acceuil'),
-    path('deconnexion/', views.deconnexion, name='deconnexion'),
+
+   
+
+    #path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('secretaire/', views.vue_secretaire, name='vue_secretaire'),
+    path('medecin/', views.vue_medecin, name='vue_medecin'),
+    path('patient/', views.vue_patient, name='vue_patient'),
+    path('inscription-secretaire/', views.inscription_secretaire, name='inscription_secretaire'),
+    path("creer_rendezvous/", views.creer_rendezvous, name="creer_rendezvous"),
+    path("creer_medecin/", views.creer_medecin, name="creer_medecin"),
+    path("creer_patient/", views.creer_patient, name="creer_patient"),
+
+
+
+
+
+    #path('acceuil/', views.acceuil, name='acceuil'), 
+    path('deconnexion/', views.deconnexion, name='deconnexion'), 
+
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    #path('api/protected/', ProtectedView.as_view(), name='protected_view'),
+    #ajouter
+    path('api/', include('myhospital.urls')),  # Inclut les URLs de l'application `myhospital`
 
 ]

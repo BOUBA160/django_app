@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><h1>Créer un Rendez-vous</h1>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>
+</body>
+</html>

@@ -54,3 +54,5 @@ class RendezVous(models.Model):
 
     def __str__(self):
         return f"RDV de {self.patient.user.username} avec {self.medecin.user.username} le {self.date_rdv}"
+
+

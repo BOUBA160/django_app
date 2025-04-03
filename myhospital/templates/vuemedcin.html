@@ -1,120 +1,163 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des patients</title>
-</head>
-<body>
-    <h1>Vue Médecin</h1>
-    <h2>Mes Rendez-vous</h2>
-    <ul>
-        {% for rdv in rendezvous %}
-        <li>{{ rdv.patient.user.username }} - {{ rdv.date_rdv }}</li>
-        {% endfor %}
-    </ul>
-    <h2>Mes Patients</h2>
-    <ul>
-        {% for patient in patients %}
-        <li>{{ patient.user.username }}</li>
-        {% endfor %}
-    </ul>
-    
-</html>-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des patients</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        ul li {
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .container {
-            text-align: center;
-        }
-
-        .navigation {
-            margin-top: 20px;
-        }
-
-        .navigation a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin: 10px;
-            text-decoration: none;
-            color: white;
-            background-color: #007BFF;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .navigation a:hover {
-            background-color: #0056b3;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Vue Médecin</title>
+    <link rel="stylesheet" href="{% static 'css/medcinstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard_secretaire.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Vue Médecin</h1>
-        <h2>Mes Rendez-vous</h2>
-        <ul>
-            {% for rdv in rendezvous %}
-            <li>{{ rdv.patient.user.username }} - {{ rdv.date_rdv }}</li>
-            {% endfor %}
-        </ul>
-        <h2>Mes Patients</h2>
-        <ul>
-            {% for patient in patients %}
-            <li>{{ patient.user.username }}</li>
-            {% endfor %}
-        </ul>
-        
-        <div class="navigation">
-            <a href="{% url 'connexion' %}" class="button">Déconnexion</a>
-            <a href="{% url 'connexion' %}" class="button">Retour à l'accueil</a>
-        </div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>Bienvenue, Dr {{ user.username }}!</h3>
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#rendezvous" onclick="showSection('rendezvous')">📅 Mes Rendez-vous</a></li>
+                <li><a href="#patients" onclick="showSection('patients')">👥 Mes Patients</a></li>
+            </ul>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <!-- Section Rendez-vous -->
+            <section id="rendezvous" class="active">
+                <h1>📅 Mes Rendez-vous</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Médecin</th>
+                            <th>Date & Heure</th>
+                            <th>Motif</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rdv in rendezvous %}
+                        <tr>
+                            <td>{{ rdv.patient.user.username }}</td>
+                            <td>{{ rdv.medecin.user.username }}</td>
+                            <td>{{ rdv.date_rdv|date:"d/m/Y H:i" }}</td>
+                            <td>{{ rdv.motif }}</td>
+                            <td>
+                                <button class="status-button" data-rdv-id="{{ rdv.id }}">
+                                    {% if rdv.statut == "effectué" %}
+                                    ✅ Effectué
+                                    {% else %}
+                                    ❌ Non Effectué
+                                    {% endif %}
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">Aucun rendez-vous trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section Patients -->
+            <section id="patients">
+                <h1>👥 Mes Patients</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td>{{ patient.user.username }}</td>
+                            <td>{{ patient.user.first_name }}</td>
+                            <td>{{ patient.user.email }}</td>
+                            <td>{{ patient.telephone }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">Aucun patient trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <div class="navigation">
+                <a href="{% url 'connexion' %}" class="button">Déconnexion</a>
+            </div>
+        </main>
     </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.main-content section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            } else {
+                console.error(`Section introuvable : ${sectionId}`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusButtons = document.querySelectorAll('.status-button');
+
+            statusButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const rdvId = button.getAttribute('data-rdv-id');
+
+                    // Basculer le statut dans l'interface utilisateur
+                    if (button.textContent.includes('❌')) {
+                        button.textContent = '✅ Effectué';
+                    } else {
+                        button.textContent = '❌ Non Effectué';
+                    }
+
+                    // Envoyer une requête POST pour mettre à jour côté serveur
+                    fetch(`/update_statut/${rdvId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({ statut: button.textContent.includes('✅') ? 'effectué' : 'non_effectué' })
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (!data.success) {
+                              alert('Erreur : ' + data.error);
+                          }
+                      }).catch(error => {
+                          console.error('Erreur lors de la requête AJAX :', error);
+                      });
+                });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </body>
 </html>

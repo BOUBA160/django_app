@@ -37,6 +37,7 @@ class MedecinForm(forms.ModelForm):
     username = forms.CharField(max_length=150, label="Nom d'utilisateur")
     password = forms.CharField(widget=forms.PasswordInput, label="Mot de passe")
     specialite = forms.CharField(max_length=100, label="Spécialité")
+    email = forms.EmailField(label="Email")
 
     class Meta:
         model = Medecin
@@ -76,7 +77,7 @@ class PatientForm(forms.ModelForm):
     username = forms.CharField(max_length=150, label="Nom d'utilisateur")
     password = forms.CharField(widget=forms.PasswordInput, label="Mot de passe")
     telephone = forms.CharField(max_length=15, label="Téléphone")
-
+    email = forms.EmailField(label="Email")
     class Meta:
         model = Patient
         fields = ['telephone']  # Inclure seulement les champs spécifiques au patient
@@ -85,7 +86,8 @@ class PatientForm(forms.ModelForm):
         # Créer un utilisateur
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
-            password=self.cleaned_data['password']
+            password=self.cleaned_data['password'],
+            email = self.cleaned_data['email']
         )
         # Associer l'utilisateur au patient
         patient = super().save(commit=False)
@@ -95,6 +97,17 @@ class PatientForm(forms.ModelForm):
         return patient
 
 # Formulaire pour la création ou mise à jour d'un rendez-vous
+"""class RendezVousForm(forms.ModelForm):
+    class Meta:
+        model = RendezVous
+        fields = ['patient', 'medecin', 'date_rdv', 'motif']
+        widgets = {
+            'date_rdv': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+"""
+from django.utils.timezone import now  # Utilisé pour comparer avec la date actuelle
+from django.core.exceptions import ValidationError
+
 class RendezVousForm(forms.ModelForm):
     class Meta:
         model = RendezVous
@@ -102,3 +115,27 @@ class RendezVousForm(forms.ModelForm):
         widgets = {
             'date_rdv': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+
+    def clean_date_rdv(self):
+        date_rdv = self.cleaned_data['date_rdv']
+
+        # Validation 1 : La date ne doit pas être dans le passé
+        if date_rdv < now():
+            raise ValidationError("La date du rendez-vous ne peut pas être dans le passé.")
+        return date_rdv
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_rdv = cleaned_data.get('date_rdv')
+        medecin = cleaned_data.get('medecin')
+
+        # Validation 2 : Vérifier si un rendez-vous existe déjà à cette date et heure pour le médecin
+        if medecin and date_rdv:
+            rendezvous_existants = RendezVous.objects.filter(
+                medecin=medecin,
+                date_rdv=date_rdv
+            )
+            if rendezvous_existants.exists():
+                raise ValidationError("Ce médecin a déjà un rendez-vous à cette date et heure.")
+        return cleaned_data
+

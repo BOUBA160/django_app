@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head><h1>Créer un Rendez-vous</h1>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Programmer un rendez-vous</title>
+    <link rel="stylesheet" href="{% static 'css/rv_style.css' %}">
+    <style>
+        body {
+            /*background: url("{% static 'images/formrv.jpg' %}") no-repeat center center;
+            background-size: cover;*/
+            background: url('{% static "images/rv.jpg" %}') no-repeat center center/cover;
+        }
+    </style>
 </head>
 <body>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer</button>
-</form>
+    <div class="container">
+        <h1>Programmer un rendez-vous</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enregistrer</button>
+        </form>
+        <div class="link-back">
+            <a href="{% url 'vue_secretaire' %}">← Retour au tableau de bord</a>
+        </div>
+    </div>
 </body>
 </html>

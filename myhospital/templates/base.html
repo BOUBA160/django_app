@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tableau de bord{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard_secretaire.css' %}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Barre latérale -->
+        <aside class="sidebar">
+            <h2>Tableau de bord</h2>
+            <ul>
+               
+                <a href="{% url 'creer_rendezvous' %}" class="btn">📅 Rendez-vous</a>
+                <a href="{% url 'creer_medecin' %}" class="btn">👨‍⚕️Médecin</a>
+                <a href="{% url 'creer_patient' %}" class="btn">👥 Patient</a>
+            </ul>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            {% block content %}
+            <!-- Le contenu spécifique ira ici -->
+            {% endblock %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <a href="{% url 'creer_rendezvous' %}" class="btn">➕ Créer Rendez-vous</a>
+        <a href="{% url 'creer_medecin' %}" class="btn">➕ Créer Médecin</a>
+        <a href="{% url 'creer_patient' %}" class="btn">➕ Créer Patient</a>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            const sections = document.querySelectorAll('.main-content section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Afficher la section cliquée
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('active');
+        }
+    </script>
+</body>
+</html>

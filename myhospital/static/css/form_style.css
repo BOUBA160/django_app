@@ -1,0 +1,95 @@
+/* Conteneur principal */
+.container {
+    width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.header {
+    background-color: #0066cc;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Style du formulaire */
+form {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="text"], input[type="password"], select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input:focus, select:focus {
+    border-color: #0066cc;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.2);
+}
+
+/* Bouton d'envoi */
+.btn-submit {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #004d99;
+}
+
+/* Lien de retour */
+.link-back {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-back {
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-back:hover {
+    color: #004d99;
+    text-decoration: underline;
+}
+
+/* Adaptabilité (responsive) */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}

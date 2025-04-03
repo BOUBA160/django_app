@@ -104,11 +104,13 @@ def inscription_secretaire(request):
         form = SecretaireCreationForm(request.POST)
         if form.is_valid():
             form.save()  # Sauvegarde le formulaire et crée l'utilisateur associé
-            return HttpResponse("Secrétaire inscrite avec succès !")
+            messages.success(request, "Inscription réussie ! Connectez-vous pour accéder à votre compte.")
+            return redirect('connexion')  # Redirige vers la page de connexion
     else:
         form = SecretaireCreationForm()
 
     return render(request, "inscription_secretaire.html", {"form": form})
+
 
 
 

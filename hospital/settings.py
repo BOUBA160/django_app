@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'myhospital',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -144,9 +146,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     #nouvellement ajoute
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',  # Autorise uniquement JSON
-    ),
+    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     
 }
 
@@ -160,3 +163,21 @@ REST_FRAMEWORK = {
 
 # URL de redirection après une déconnexion
 #LOGOUT_REDIRECT_URL = '/secretaire/'
+# Optionnel : Configurations supplémentaires pour JWT
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
+#pour gerer les securites hhttps
+# Sécurisation en local
+SECURE_SSL_REDIRECT = False  # Pas de redirection forcée
+SESSION_COOKIE_SECURE = True  # Sécuriser les cookies de session
+CSRF_COOKIE_SECURE = True  # Sécuriser les cookies CSRF
+SECURE_HSTS_SECONDS = 0  # Désactiver HSTS en local
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+

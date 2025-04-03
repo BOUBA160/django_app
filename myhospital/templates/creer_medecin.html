@@ -1,15 +1,29 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
-    <title>Créer un Médecin</title>
+    <title>Inscrire un Médecin</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard_secretaire.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form_style.css' %}">
 </head>
 <body>
-    <h1>Créer un Médecin</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enregistrer</button>
-    </form>
+    <div class="container">
+        <div class="header">
+            <h1>Inscription d'un Médecin</h1>
+            <p>Ajoutez les informations nécessaires pour enregistrer un médecin.</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn-submit">Créer le Médecin</button>
+        </form>
+        <div class="link-back">
+            <a href="{% url 'vue_secretaire' %}" class="btn-back">← Retour au Tableau de bord</a>
+        </div>
+    </div>
 </body>
 </html>

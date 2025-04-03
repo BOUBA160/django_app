@@ -37,12 +37,13 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.connexion, name='connexion'),
+   
 
    
 
     #path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('', views.connexion, name='connexion'),
     path('secretaire/', views.vue_secretaire, name='vue_secretaire'),
     path('medecin/', views.vue_medecin, name='vue_medecin'),
     path('patient/', views.vue_patient, name='vue_patient'),
